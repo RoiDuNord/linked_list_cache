@@ -2,8 +2,8 @@ package valuetostringslice
 
 import (
 	"strings"
-	"workWithCache/server/elements/converting/convertingFuncs/parameterValueToIntSlice/parameterValueToStringSlice/deduplication"
-	customerrors "workWithCache/server/elements/customErrors"
+	"workWithCache/server/convertingResponseToIntSlice/convertingFuncs/parameterValueToIntSlice/parameterValueToStringSlice/deduplication"
+	customerrors "workWithCache/server/customErrors"
 )
 
 func ParameterValueToStringSlice(parameter string) ([]string, error) {

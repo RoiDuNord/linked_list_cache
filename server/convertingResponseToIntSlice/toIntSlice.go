@@ -2,7 +2,7 @@ package converting
 
 import (
 	"fmt"
-	convfuncs "workWithCache/server/elements/converting/convertingFuncs/parameterValueToIntSlice"
+	valstoints "workWithCache/server/convertingResponseToIntSlice/convertingFuncs/parameterValueToIntSlice"
 )
 
 type GetInfoRequestData string
@@ -12,7 +12,7 @@ func (parameterValue GetInfoRequestData) ToIntSlice(parameter string) ([]int, er
 	if err := isParameterNumbers(parameter); err != nil {
 		return nil, err
 	}
-	slice, err := convfuncs.ParameterValueToSortedIntSlice(parameterValueString)
+	slice, err := valstoints.ParameterValueToSortedIntSlice(parameterValueString)
 	return slice, err
 }
 
