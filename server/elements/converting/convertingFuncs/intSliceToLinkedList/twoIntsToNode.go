@@ -10,6 +10,8 @@ type Node struct {
 	Next *Node
 }
 
+// В вот тут не нравится
+// Структура по сути принаделжит кэшу, поэтому класть её в отдельный пакет смысла нет
 func NewNode(number, multipliedNumber int) *Node {
 	return &Node{
 		Data: Data{
