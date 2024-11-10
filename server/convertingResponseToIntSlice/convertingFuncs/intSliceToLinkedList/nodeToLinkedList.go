@@ -1,6 +1,9 @@
-package convfuncs
+package intslicetolinkedlist
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 type LinkedList struct {
 	Head *Node
@@ -22,14 +25,14 @@ func (list *LinkedList) Append(node Node) {
 	}
 }
 
-func (list *LinkedList) Output() {
+func (list *LinkedList) Output(w http.ResponseWriter) {
 	current := list.Head
 	c := 1
 	if current == nil {
 		return
 	}
 	for current.Next != nil {
-		fmt.Printf("Node №: %d (%d -> %d)\n", c, current.Data.Number, current.Data.MultipliedNumber)
+		fmt.Fprintf(w, "Node №: %d (%d -> %d)\n", c, current.Data.Number, current.Data.MultipliedNumber)
 		current = current.Next
 		c++
 	}

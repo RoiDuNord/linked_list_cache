@@ -1,4 +1,4 @@
-package convfuncs
+package intslicetolinkedlist
 
 type Data struct {
 	Number           int

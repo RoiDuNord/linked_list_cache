@@ -2,7 +2,7 @@ package convfuncs
 
 import (
 	"strings"
-	customerrors "workWithCache/server/elements/customErrors"
+	customerrors "workWithCache/server/customErrors"
 )
 
 func StringSliceToIntSlice(parameterValue string, stringSlice []string) ([]int, error) {
