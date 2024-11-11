@@ -1,5 +1,5 @@
 module workWithCache
 
-go 1.23.1
+go 1.23.2
 
 require github.com/go-chi/chi v1.5.5

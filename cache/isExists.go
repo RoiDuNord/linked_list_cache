@@ -1,14 +1,12 @@
 package cache
 
-import structs "workWithCache/server/convertingResponseToIntSlice/convertingFuncs/intSliceToLinkedList"
-
-func isExists(number int, current *structs.Node) bool {
+func isExists(number int, current *Node) bool {
 	for current != nil {
-		currentNum := current.Data.Number
+		currentNum := current.data.number
 		if currentNum == number {
 			return true
 		}
-		current = current.Next
+		current = current.next
 	}
 	return false
 }

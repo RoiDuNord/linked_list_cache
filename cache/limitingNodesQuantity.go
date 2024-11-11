@@ -8,12 +8,12 @@ func (cache *Cache) LimitingNodesQuantity(newSize int) error {
 	if newSize < 0 {
 		return customerrors.NewNegativeCacheSize(newSize)
 	}
-	currentNode := cache.Data.Head
+	currentNode := cache.Data.head
 	var count int
 	for count < newSize {
-		currentNode = currentNode.Next
+		currentNode = currentNode.next
 		count++
 	}
-	currentNode.Next = nil
+	currentNode.next = nil
 	return nil
 }

@@ -28,7 +28,7 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 	factor := 4
 
 	cache := s.cache
-	userResponse, err := s.db.FindNumbers(w, inputNumbers, factor, cache)
+	userResponse, err := s.db.FindNumbers(inputNumbers, factor, cache)
 	if !checkers.Database(err, w) {
 		return
 	}
