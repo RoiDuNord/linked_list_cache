@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Server) LimitedCacheHandler(w http.ResponseWriter, r *http.Request) {
-	newCacheSize := -7
+	newCacheSize := 4
 
 	if newCacheSize == 0 {
 		fmt.Fprint(w, "Cache size set to zero, but that's okay.\n")

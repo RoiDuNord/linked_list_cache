@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"workWithCache/config"
 	"workWithCache/server/checkers"
 	converting "workWithCache/server/convertingResponseToIntSlice"
 	convert "workWithCache/server/convertingResponseToIntSlice/convertingFuncs/intSliceToStringSlice"
@@ -14,6 +15,8 @@ func responseValue(parameter string, _ http.ResponseWriter, r *http.Request) con
 }
 
 func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "First step\n")
+
 	parameter := "numbers"
 	parameterValue := responseValue(parameter, w, r)
 	if !checkers.ParameterValue(parameterValue, parameter, w) {
@@ -25,23 +28,35 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	factor := 4
+	cfg, err := config.ParseConfig()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	cache := s.cache
-	userResponse, err := s.db.FindNumbers(inputNumbers, factor, cache)
+	cache, uncachedNumbers := s.cache.FindNumbers(inputNumbers)
+	fmt.Fprint(w, "Cache: ", cache, "\n")
+
+	if len(uncachedNumbers) == 0 {
+		http.Error(w, "No uncached numbers provided", http.StatusBadRequest)
+		return
+	}
+
+	dbData, err := s.db.FindNumbers(inputNumbers, cfg.Factor)
 	if !checkers.Database(err, w) {
 		return
 	}
 
-	fmt.Fprintf(w, "User Response: %s\n", strings.Join(convert.IntSliceToStringSlice(userResponse), ","))
-	fmt.Fprint(w, "First step\n")
+	fmt.Fprint(w, "DB: ", dbData, "\n")
 
-	cache.Data.Output(w)
+	for i := range uncachedNumbers {
+		s.cache.InsertNumber(uncachedNumbers[i], dbData[i])
+	}
+
+	responseData := append(cache, dbData...)
+
+	fmt.Fprintf(w, "User Response: %s\n", strings.Join(convert.IntSliceToStringSlice(responseData), ","))
+
+	s.cache.Data.Output(w)
+
 }
-
-// пытаемся найти в кэше, потому что это быстрее
-// cache.Find(inputNumbers)
-// идём в бд и "ищем" эти числа, если надо
-// собираем результат
-// кладём в кэш результаты
-// отдаёт пользователю

@@ -6,16 +6,6 @@ import (
 
 func main() {
 	server.Run()
-
-	// server.run()
-
-	// cmd/main.go
-	// (numbersMap *map[int]int) - полная хуйня
-	// перенести converter внутрь сервера, потому что он используется только там
-	// дописать кэш сначала на маре потому на списке по желанию
-
-	// db := db.New()
-	// print(db)
 }
 
 // слой сервера

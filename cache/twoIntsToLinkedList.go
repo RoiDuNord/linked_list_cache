@@ -28,19 +28,19 @@ func newNode(number, multipliedNumber int) *Node {
 	}
 }
 
-func NewLinkedList() *LinkedList {
+func newLinkedList() *LinkedList {
 	return &LinkedList{}
 }
 
-func (list *LinkedList) Append(node Node) {
+func (list *LinkedList) append(node *Node) {
 	if list.head == nil {
-		list.head = &node
+		list.head = node
 	} else {
 		current := list.head
 		for current.next != nil {
 			current = current.next
 		}
-		current.next = &node
+		current.next = node
 	}
 }
 
@@ -50,7 +50,7 @@ func (list *LinkedList) Output(w http.ResponseWriter) {
 	if current == nil {
 		return
 	}
-	for current.next != nil {
+	for current != nil {
 		fmt.Fprintf(w, "Node №: %d (%d -> %d)\n", c, current.data.number, current.data.multipliedNumber)
 		current = current.next
 		c++

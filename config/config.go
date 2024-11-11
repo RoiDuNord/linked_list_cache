@@ -1,11 +1,7 @@
 package config
 
 type Config struct {
-	Port     int
-	Factor   int
-	LogLevel string
-}
-
-func NewConfig() *Config {
-	return &Config{}
+	Port     int    `yaml:"port"`
+	Factor   int    `yaml:"factor"`
+	LogLevel string `yaml:"loglevel"`
 }

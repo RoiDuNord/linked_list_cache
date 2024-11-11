@@ -1,0 +1,3 @@
+port: 80
+factor: 4
+loglevel: DEBUG
