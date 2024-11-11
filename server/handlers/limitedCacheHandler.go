@@ -17,7 +17,7 @@ func (s *Server) LimitedCacheHandler(w http.ResponseWriter, r *http.Request) {
 	err := s.cache.LimitingNodesQuantity(newCacheSize)
 	if err != nil {
 		log.Printf("%v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		http.Error(w, "Internal Server Error (%d)", http.StatusInternalServerError)
 		return
 	}
 

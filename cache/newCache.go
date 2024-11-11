@@ -1,13 +1,9 @@
 package cache
 
-import (
-	structs "workWithCache/server/convertingResponseToIntSlice/convertingFuncs/intSliceToLinkedList"
-)
-
 type Cache struct {
-	Data *structs.LinkedList
+	Data *LinkedList
 }
 
 func New() *Cache {
-	return &Cache{Data: structs.NewLinkedList()}
+	return &Cache{Data: NewLinkedList()}
 }

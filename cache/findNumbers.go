@@ -7,7 +7,7 @@ func (cache *Cache) FindNumbers(inputSlice []int) ([]int, []int) {
 	list := cache.Data
 
 	for _, number := range inputSlice {
-		current := list.Head
+		current := list.head
 		if isExists(number, current) {
 			foundNumbers = append(foundNumbers, number)
 			log.Printf("%d exists in cache\n", number)
