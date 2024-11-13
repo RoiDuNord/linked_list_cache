@@ -5,7 +5,11 @@ import (
 )
 
 func ParseConfig() (*Config, error) {
-	file := "/Volumes/Data/workWithCache/config/config.yaml"
+	file, err := getConfigFilePath()
+	if err != nil {
+		return nil, err
+	}
+
 	cfg, err := loadConfig(file)
 	if err != nil {
 		return nil, err

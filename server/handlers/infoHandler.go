@@ -38,6 +38,7 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Cache: ", cache, "\n")
 
 	if len(uncachedNumbers) == 0 {
+		fmt.Fprintf(w, "User Response: %s\n", strings.Join(convert.IntSliceToStringSlice(cache), ", "))
 		http.Error(w, "No uncached numbers provided", http.StatusBadRequest)
 		return
 	}
@@ -55,7 +56,7 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 
 	responseData := append(cache, dbData...)
 
-	fmt.Fprintf(w, "User Response: %s\n", strings.Join(convert.IntSliceToStringSlice(responseData), ","))
+	fmt.Fprintf(w, "User Response: %s\n", strings.Join(convert.IntSliceToStringSlice(responseData), ", "))
 
 	s.cache.Data.Output(w)
 
