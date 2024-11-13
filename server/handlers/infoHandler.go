@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"workWithCache/config"
 	"workWithCache/server/checkers"
 	converting "workWithCache/server/convertingResponseToIntSlice"
 	convert "workWithCache/server/convertingResponseToIntSlice/convertingFuncs/intSliceToStringSlice"
@@ -15,8 +14,6 @@ func responseValue(parameter string, _ http.ResponseWriter, r *http.Request) con
 }
 
 func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "First step\n")
-
 	parameter := "numbers"
 	parameterValue := responseValue(parameter, w, r)
 	if !checkers.ParameterValue(parameterValue, parameter, w) {
@@ -25,12 +22,6 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 
 	inputNumbers, err := parameterValue.ToIntSlice(parameter)
 	if !checkers.InputNumbers(err, w) {
-		return
-	}
-
-	cfg, err := config.ParseConfig()
-	if err != nil {
-		fmt.Println(err)
 		return
 	}
 
@@ -43,7 +34,7 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dbData, err := s.db.FindNumbers(inputNumbers, cfg.Factor)
+	dbData, err := s.db.FindNumbers(inputNumbers, s.currFactor)
 	if !checkers.Database(err, w) {
 		return
 	}

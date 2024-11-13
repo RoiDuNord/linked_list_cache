@@ -7,10 +7,12 @@ import (
 )
 
 func (s *Server) LimitedCacheHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Second step\n")
+	// fmt.Fprint(w, "Second step\n")
+	// log.
 
 	var newSize int
 
+	// читать из json
 	fmt.Print("New size: ")
 	fmt.Scan(&newSize)
 

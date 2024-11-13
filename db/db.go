@@ -46,13 +46,14 @@ package db
 import (
 	"log"
 	"time"
+	"workWithCache/config"
 )
 
 type Database struct {
 	data []int
 }
 
-func New() *Database {
+func New(cfg config.Config) *Database {
 	return &Database{}
 }
 

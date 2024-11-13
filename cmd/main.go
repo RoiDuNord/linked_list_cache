@@ -1,11 +1,19 @@
 package main
 
 import (
+	"fmt"
+	"workWithCache/config"
 	"workWithCache/server"
 )
 
 func main() {
-	server.Run()
+	cfg, err := config.ParseConfig()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	server.Run(cfg)
 }
 
 // слой сервера
