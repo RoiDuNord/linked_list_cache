@@ -1,6 +1,7 @@
 package checkers
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -27,8 +28,17 @@ func InputNumbers(err error, w http.ResponseWriter) bool {
 
 func ParameterValue(parameterValue converting.GetInfoRequestData, parameter string, w http.ResponseWriter) bool {
 	if parameterValue == "" {
-		http.Error(w, fmt.Sprintf("this URL doesn't contain requested parameter '%s'", parameter), http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		e := userError{
+			ErrorText: fmt.Sprintf("this URL doesn't contain requested parameter '%s'", parameter),
+		}
+		bytes, _ := json.Marshal(e)
+		w.Write(bytes)
 		return false
 	}
 	return true
+}
+
+type userError struct {
+	ErrorText string `json:"error"`
 }

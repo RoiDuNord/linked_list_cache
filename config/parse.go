@@ -1,29 +1,14 @@
 package config
 
-import (
-	"fmt"
-)
-
-func ParseConfig() (*Config, error) {
-	file, err := getConfigFilePath()
+func ParseConfig() (Config, error) {
+	cfg, err := loadConfigFromFile("config.yaml")
 	if err != nil {
-		return nil, err
-	}
-
-	cfg, err := loadConfig(file)
-	if err != nil {
-		return nil, err
+		return Config{}, err
 	}
 
 	if err := cfg.Validate(); err != nil {
-		return nil, err
+		return Config{}, err
 	}
-
-	fmt.Printf("Server will start on port: %d\n", cfg.Port)
-	fmt.Printf("Factor: %d\n", cfg.Factor)
-	fmt.Printf("Log Level: %s\n", cfg.LogLevel)
-
-	fmt.Print(cfg)
 
 	return cfg, nil
 }

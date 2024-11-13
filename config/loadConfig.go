@@ -1,21 +1,24 @@
 package config
 
 import (
+	"log"
 	"os"
 
 	"gopkg.in/yaml.v3"
 )
 
-func loadConfig(filePath string) (*Config, error) {
+func loadConfigFromFile(filePath string) (Config, error) {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
-		return nil, err
+		return Config{}, err
 	}
 
 	var config Config
 	if err := yaml.Unmarshal(data, &config); err != nil {
-		return nil, err
+		return Config{}, err
 	}
 
-	return &config, nil
+	log.Printf("cfg: %+v", config)
+
+	return config, nil
 }
