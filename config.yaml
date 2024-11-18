@@ -1,0 +1,3 @@
+port: 8080
+factor: 4
+loglevel: DEBUG
