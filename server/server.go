@@ -21,10 +21,14 @@ func Run(cfg config.Config) error {
 
 	s := handlers.New(cfg, db, cache)
 
+	go s.StartFactorizeIncrement()
+
 	router.Get("/info", s.InfoHandler)
 	router.Post("/admin/cache/setSize", s.LimitedCacheHandler)
-	router.Post("/admin/cache/changeFactor", s.FactorChanging)
+	router.Post("/admin/cache/changeFactor", s.SetFactor)
 	router.Get("/admin/cache/output", s.OutputHandler)
+	router.Post("/admin/cache/setFactor", s.SetFactor)
+	router.Post("/admin/worker/setActiveStatus", s.StartStopWorker)
 
 	log.Printf("Server runs at port %d", cfg.Port)
 

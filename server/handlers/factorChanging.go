@@ -6,11 +6,17 @@ import (
 	"time"
 )
 
-func (s *Server) FactorChanging(w http.ResponseWriter, r *http.Request) {
-	go s.factorModifiedList()
+func (s *Server) SetFactor(w http.ResponseWriter, r *http.Request) {
+	// парсим пришедший json
+	s.curFactor = 0
 }
 
-func (s *Server) factorModifiedList() {
+func (s *Server) StartStopWorker(w http.ResponseWriter, r *http.Request) {
+	// парсим пришедший json
+	// вкл/выкл горутина
+}
+
+func (s *Server) StartFactorizeIncrement() {
 	for {
 		time.Sleep(5 * time.Second)
 		s.curFactor++
