@@ -15,7 +15,7 @@ func StringSliceToIntSlice(parameterValue string, stringSlice []string) ([]int, 
 		}
 		newSlice = append(newSlice, number)
 	}
-	if err := customerrors.CheckAndHandleEmptySlice(newSlice, parameterValue); err != nil {
+	if err := customerrors.EmptySliceError(newSlice, parameterValue); err != nil {
 		return nil, err
 	}
 	return newSlice, nil

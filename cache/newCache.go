@@ -3,9 +3,9 @@ package cache
 import "workWithCache/config"
 
 type Cache struct {
-	Data *LinkedList
+	List *LinkedList
 }
 
 func New(cfg config.Config) *Cache {
-	return &Cache{Data: newLinkedList()}
+	return &Cache{List: newLinkedList()}
 }

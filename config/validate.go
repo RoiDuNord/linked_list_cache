@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func (c *Config) Validate() error {
+func (c *Config) validate() error {
 	if c.Port <= 0 || c.Port > 65535 {
 		return fmt.Errorf("invalid port number (%d)", c.Port)
 	}

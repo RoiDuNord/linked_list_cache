@@ -6,31 +6,31 @@ import (
 
 func (cache *Cache) LimitingNodesQuantity(newSize int) error {
 	if newSize < 0 {
-		return customerrors.NewNegativeCacheSize(newSize)
+		return customerrors.NegativeCacheSizeError(newSize)
 	}
 
-	currentNode := cache.Data.head
+	currentNode := cache.List.Head
 	var count int
 
 	for currentNode != nil {
 		count++
-		currentNode = currentNode.next
+		currentNode = currentNode.Next
 	}
 
 	if count <= newSize {
-		return nil
+		return customerrors.ExceedingCacheSizeError(count, newSize)
 	}
 
-	currentNode = cache.Data.head
+	currentNode = cache.List.Head
 	count = 0
 
 	for count < newSize-1 {
-		currentNode = currentNode.next
+		currentNode = currentNode.Next
 		count++
 	}
 
 	if currentNode != nil {
-		currentNode.next = nil
+		currentNode.Next = nil
 	}
 
 	return nil

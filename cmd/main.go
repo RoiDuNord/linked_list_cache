@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"workWithCache/config"
 	"workWithCache/server"
 )
@@ -9,8 +9,11 @@ import (
 func main() {
 	cfg, err := config.ParseConfig()
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatalf("Error parsing config: %v", err)
+	}
+
+	if cfg == (config.Config{}) {
+		log.Fatal("Empty config")
 	}
 
 	server.Run(cfg)

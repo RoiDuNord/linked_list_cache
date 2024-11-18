@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-type ZeroLenError struct {
-	parameterValue string
+type ZeroLen struct {
+	ParameterValue string
 }
 
-func (e *ZeroLenError) Error() string {
-	return fmt.Sprintf("zero length error for parameter value: %s", e.parameterValue)
+func (e *ZeroLen) Error() string {
+	return fmt.Sprintf("zero length error for parameter value: %s", e.ParameterValue)
 }
 
-func NewZeroLenError(parameterValue string) *ZeroLenError {
-	return &ZeroLenError{parameterValue: parameterValue}
+func ZeroLenError(parameterValue string) *ZeroLen {
+	return &ZeroLen{ParameterValue: parameterValue}
 }

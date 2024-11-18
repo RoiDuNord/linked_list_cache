@@ -6,7 +6,7 @@ func ParseConfig() (Config, error) {
 		return Config{}, err
 	}
 
-	if err := cfg.Validate(); err != nil {
+	if err := cfg.validate(); err != nil {
 		return Config{}, err
 	}
 

@@ -1,32 +1,38 @@
 package handlers
 
 import (
-	"fmt"
-	"log"
+	"encoding/json"
 	"net/http"
+	customerrors "workWithCache/server/customErrors"
 )
 
+type NewCacheSize struct {
+	Size int `json:"newSize"`
+}
+
+type ChangedSize struct {
+	Size int `json:"changedSize"`
+}
+
 func (s *Server) LimitedCacheHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Fprint(w, "Second step\n")
-	// log.
+	var newSizeOfCache NewCacheSize
 
-	var newSize int
-
-	// читать из json
-	fmt.Print("New size: ")
-	fmt.Scan(&newSize)
-
-	if newSize == 0 {
-		fmt.Fprint(w, "Cache size set to zero, but that's okay.\n")
-		return
-	}
-
-	err := s.cache.LimitingNodesQuantity(newSize)
+	err := json.NewDecoder(r.Body).Decode(&newSizeOfCache)
 	if err != nil {
-		log.Printf("%v", err)
-		http.Error(w, "Internal Server Error (%d)", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		e := customerrors.JSONEncodingError(err)
+		json.NewEncoder(w).Encode(e)
+		return
+	}
+	defer r.Body.Close()
+
+	err = s.cache.LimitingNodesQuantity(newSizeOfCache.Size)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		e := customerrors.WrongSizeError(err)
+		json.NewEncoder(w).Encode(e)
 		return
 	}
 
-	s.cache.Data.Output(w)
+	json.NewEncoder(w).Encode(ChangedSize(newSizeOfCache))
 }

@@ -57,14 +57,14 @@ func New(cfg config.Config) *Database {
 	return &Database{}
 }
 
-func (db *Database) FindNumbers(uncachedNumbers []int, factor int) ([]int, error) {
+func (db *Database) FindNumbers(uncachedNumbers []int, factor int) []int {
 
 	multipliedNumbers := multiplyMissingNumbers(uncachedNumbers, factor)
 
 	db.data = append(db.data, uncachedNumbers...)
 
 	log.Printf("All database requests count: %d\n", len(db.data))
-	return multipliedNumbers, nil
+	return multipliedNumbers
 }
 
 func multiplyMissingNumbers(missingNumbers []int, factor int) []int {

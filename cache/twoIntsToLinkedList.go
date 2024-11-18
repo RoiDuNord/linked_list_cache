@@ -1,29 +1,30 @@
 package cache
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+	customerrors "workWithCache/server/customErrors"
 )
 
 type Data struct {
-	number           int
-	multipliedNumber int
+	Number           int `json:"number"`
+	MultipliedNumber int `json:"multipliedNumber"`
 }
 
 type Node struct {
-	data Data
-	next *Node
+	Data Data
+	Next *Node
 }
 
 type LinkedList struct {
-	head *Node
+	Head *Node
 }
 
 func newNode(number, multipliedNumber int) *Node {
 	return &Node{
-		data: Data{
-			number:           number,
-			multipliedNumber: multipliedNumber,
+		Data: Data{
+			Number:           number,
+			MultipliedNumber: multipliedNumber,
 		},
 	}
 }
@@ -33,26 +34,39 @@ func newLinkedList() *LinkedList {
 }
 
 func (list *LinkedList) append(node *Node) {
-	if list.head == nil {
-		list.head = node
+	if list.Head == nil {
+		list.Head = node
 	} else {
-		current := list.head
-		for current.next != nil {
-			current = current.next
+		current := list.Head
+		for current.Next != nil {
+			current = current.Next
 		}
-		current.next = node
+		current.Next = node
 	}
 }
 
 func (list *LinkedList) Output(w http.ResponseWriter) {
-	current := list.head
-	c := 1
+	var listNodes CacheNodes
+	current := list.Head
+
 	if current == nil {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(listNodes)
 		return
 	}
+
 	for current != nil {
-		fmt.Fprintf(w, "Node №: %d (%d -> %d)\n", c, current.data.number, current.data.multipliedNumber)
-		current = current.next
-		c++
+		listNodes.Nodes = append(listNodes.Nodes, current.Data)
+		current = current.Next
 	}
+
+	if err := json.NewEncoder(w).Encode(listNodes); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		e := customerrors.JSONEncodingError(err)
+		json.NewEncoder(w).Encode(e)
+	}
+}
+
+type CacheNodes struct {
+	Nodes []Data `json:"list"`
 }

@@ -4,19 +4,19 @@ import "log"
 
 func (cache *Cache) FindNumbers(inputSlice []int) ([]int, []int) {
 	var multipliedNumbers, missingNumbers []int
-	list := cache.Data
+	list := cache.List
 
 	for _, number := range inputSlice {
-		current := list.head
+		current := list.Head
 		if isExists(number, current) {
 			for current != nil {
-				if current.data.number == number {
-					multipliedNumber := current.data.multipliedNumber
+				if current.Data.Number == number {
+					multipliedNumber := current.Data.MultipliedNumber
 					multipliedNumbers = append(multipliedNumbers, multipliedNumber)
-					log.Printf("%d exists in cache with multiplied value %d\n", number, current.data.multipliedNumber)
+					log.Printf("%d exists in cache with multiplied value %d\n", number, current.Data.MultipliedNumber)
 					break
 				}
-				current = current.next
+				current = current.Next
 			}
 		} else {
 			missingNumbers = append(missingNumbers, number)
@@ -24,7 +24,7 @@ func (cache *Cache) FindNumbers(inputSlice []int) ([]int, []int) {
 		}
 	}
 
-	log.Printf("Values from found numbers: %v", multipliedNumbers)
-	log.Printf("Missing numbers: %v", missingNumbers)
+	log.Printf("Values from found numbers: %d", multipliedNumbers)
+	log.Printf("Missing numbers: %d", missingNumbers)
 	return multipliedNumbers, missingNumbers
 }

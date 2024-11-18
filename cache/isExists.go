@@ -2,11 +2,11 @@ package cache
 
 func isExists(number int, current *Node) bool {
 	for current != nil {
-		currentNum := current.data.number
+		currentNum := current.Data.Number
 		if currentNum == number {
 			return true
 		}
-		current = current.next
+		current = current.Next
 	}
 	return false
 }

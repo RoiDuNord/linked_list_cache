@@ -18,7 +18,7 @@ func (parameterValue GetInfoRequestData) ToIntSlice(parameter string) ([]int, er
 
 func isParameterNumbers(parameter string) error {
 	if parameter != "numbers" {
-		return fmt.Errorf("server doesn't contain information for requested parameter '%s'", parameter)
+		return fmt.Errorf("server doesn't contain information about requested parameter '%s'", parameter)
 	}
 	return nil
 }
