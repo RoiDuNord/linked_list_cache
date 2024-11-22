@@ -50,7 +50,7 @@ import (
 )
 
 type Database struct {
-	data []int
+	Data []int
 }
 
 func New(cfg config.Config) *Database {
@@ -61,9 +61,9 @@ func (db *Database) FindNumbers(uncachedNumbers []int, factor int) []int {
 
 	multipliedNumbers := multiplyMissingNumbers(uncachedNumbers, factor)
 
-	db.data = append(db.data, uncachedNumbers...)
+	db.Data = append(db.Data, uncachedNumbers...)
 
-	log.Printf("All database requests count: %d\n", len(db.data))
+	log.Printf("all database requests count: %d\n", len(db.Data))
 	return multipliedNumbers
 }
 

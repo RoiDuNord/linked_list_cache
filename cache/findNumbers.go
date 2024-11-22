@@ -24,7 +24,7 @@ func (cache *Cache) FindNumbers(inputSlice []int) ([]int, []int) {
 		}
 	}
 
-	log.Printf("Values from found numbers: %d", multipliedNumbers)
-	log.Printf("Missing numbers: %d", missingNumbers)
+	log.Printf("values from found numbers: %d", multipliedNumbers)
+	log.Printf("missing numbers: %d", missingNumbers)
 	return multipliedNumbers, missingNumbers
 }

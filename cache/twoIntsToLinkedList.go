@@ -3,7 +3,6 @@ package cache
 import (
 	"encoding/json"
 	"net/http"
-	customerrors "workWithCache/server/customErrors"
 )
 
 type Data struct {
@@ -62,8 +61,7 @@ func (list *LinkedList) Output(w http.ResponseWriter) {
 
 	if err := json.NewEncoder(w).Encode(listNodes); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		e := customerrors.JSONEncodingError(err)
-		json.NewEncoder(w).Encode(e)
+		json.NewEncoder(w).Encode(err)
 	}
 }
 

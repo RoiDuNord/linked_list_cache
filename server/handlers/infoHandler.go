@@ -4,13 +4,29 @@ import (
 	"encoding/json"
 	"net/http"
 	"workWithCache/cache"
+	"workWithCache/config"
+	"workWithCache/db"
 	"workWithCache/server/checkers"
 	converting "workWithCache/server/convertingResponseToIntSlice"
-	customerrors "workWithCache/server/customErrors"
 )
 
-func responseValue(parameter string, r *http.Request) converting.GetInfoRequestData {
-	return converting.GetInfoRequestData(r.URL.Query().Get(parameter))
+type Server struct {
+	db    *db.Database
+	cache *cache.Cache
+
+	curFactor int
+}
+
+type UserResponse struct {
+	Response []int `json:"userResponse"`
+}
+
+func New(cfg config.Config, db *db.Database, cache *cache.Cache) *Server {
+	return &Server{
+		db:        db,
+		cache:     cache,
+		curFactor: cfg.Factor,
+	}
 }
 
 func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
@@ -36,12 +52,10 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 		responseData := append(cacheData, dbData...)
 		userResponseHandler(responseData, w)
 	}
-
-	// s.cache.List.Output(w)
 }
 
-type UserResponse struct {
-	Response []int `json:"userResponse"`
+func responseValue(parameter string, r *http.Request) converting.GetInfoRequestData {
+	return converting.GetInfoRequestData(r.URL.Query().Get(parameter))
 }
 
 func userResponseHandler(responseData []int, w http.ResponseWriter) {
@@ -50,8 +64,7 @@ func userResponseHandler(responseData []int, w http.ResponseWriter) {
 	}
 	if err := json.NewEncoder(w).Encode(userResponse); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		e := customerrors.JSONEncodingError(err)
-		json.NewEncoder(w).Encode(e)
+		json.NewEncoder(w).Encode(err)
 	}
 }
 

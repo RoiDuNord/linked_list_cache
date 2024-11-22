@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	customerrors "workWithCache/server/customErrors"
 )
@@ -14,19 +15,16 @@ type ChangedSize struct {
 	Size int `json:"changedSize"`
 }
 
-func (s *Server) LimitedCacheHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) ChangeCacheSize(w http.ResponseWriter, r *http.Request) {
 	var newSizeOfCache NewCacheSize
-
-	err := json.NewDecoder(r.Body).Decode(&newSizeOfCache)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&newSizeOfCache); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		e := customerrors.JSONEncodingError(err)
-		json.NewEncoder(w).Encode(e)
+		json.NewEncoder(w).Encode(err)
 		return
 	}
 	defer r.Body.Close()
 
-	err = s.cache.LimitingNodesQuantity(newSizeOfCache.Size)
+	err := s.cache.LimitingNodesQuantity(newSizeOfCache.Size)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		e := customerrors.WrongSizeError(err)
@@ -34,5 +32,6 @@ func (s *Server) LimitedCacheHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(ChangedSize(newSizeOfCache))
+	// json.NewEncoder(w).Encode(ChangedSize(newSizeOfCache))
+	log.Printf("new cache size: %d", newSizeOfCache.Size)
 }
