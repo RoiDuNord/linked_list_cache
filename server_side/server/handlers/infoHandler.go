@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"server/cache"
 	"server/config"
@@ -18,7 +19,7 @@ type Server struct {
 }
 
 type UserResponse struct {
-	Response []int `json:"userResponse"`
+	Data []int `json:"userResponse"`
 }
 
 func New(cfg config.Config, db *db.Database, cache *cache.Cache) *Server {
@@ -43,15 +44,12 @@ func (s *Server) InfoHandler(w http.ResponseWriter, r *http.Request) {
 
 	cacheData, uncachedNumbers := s.cache.FindNumbers(inputNumbers)
 	if len(uncachedNumbers) == 0 {
-		e := cache.ZeroLenUncached(inputNumbers)
-		json.NewEncoder(w).Encode(e)
-		userResponseHandler(cacheData, w)
-		return
-	} else {
-		dbData := s.uncachedDataHandler(uncachedNumbers)
-		responseData := append(cacheData, dbData...)
-		userResponseHandler(responseData, w)
+		log.Printf("requested values %d fully cached\n", inputNumbers)
 	}
+
+	dbData := s.uncachedDataHandler(uncachedNumbers)
+	responseData := append(cacheData, dbData...)
+	userResponseHandler(responseData, w)
 }
 
 func responseValue(parameter string, r *http.Request) converting.GetInfoRequestData {
@@ -60,7 +58,7 @@ func responseValue(parameter string, r *http.Request) converting.GetInfoRequestD
 
 func userResponseHandler(responseData []int, w http.ResponseWriter) {
 	userResponse := UserResponse{
-		Response: responseData,
+		Data: responseData,
 	}
 	if err := json.NewEncoder(w).Encode(userResponse); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
