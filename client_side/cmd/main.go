@@ -2,8 +2,10 @@ package main
 
 import (
 	"client/cmd/requests"
+	"fmt"
 )
 
 func main() {
-	requests.InfoRequest()
+	status, response := requests.InfoRequest()
+	fmt.Printf("%s\n%s", status, response)
 }

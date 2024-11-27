@@ -1,54 +1,49 @@
 package requests
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
-	"net"
-	"server/server/handlers"
-	"strings"
+	"net/http"
 )
 
-func InfoRequest() {
-	infoRequest := "GET /info?number=2,54,36,4,23,ejbcf,9,789,7,56,65,egv HTTP/1.1\n" +
-		"Host: localhost:8080\n" +
-		"Connection: close\n\n"
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
 
-	conn, err := net.Dial("tcp", "localhost:8080")
+func InfoRequest() (string, string) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "http://localhost:8080/info?numbers=2,789,7,56,reojf,454,3648,3759,neflefjl,fhgfg,eong5,egv", nil)
 	if err != nil {
-		fmt.Println("Error connecting:", err)
-		return
-	}
-	defer conn.Close()
-
-	if _, err = conn.Write([]byte(infoRequest)); err != nil {
-		fmt.Println("Error writing request:", err)
-		return
+		fmt.Println("Failed to create request:", err)
+		return "", ""
 	}
 
-	response, err := io.ReadAll(conn)
+	req.Header.Add("Accept", "application/json")
+
+	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatalf("Error reading response: %v", err)
+		fmt.Println("Request failed:", err)
+		return "", ""
+	}
+	defer resp.Body.Close()
+
+	var responseBody bytes.Buffer
+	if _, err := io.Copy(&responseBody, resp.Body); err != nil {
+		fmt.Println("Failed to read response body:", err)
+		return "", ""
 	}
 
-	stringResponse := string(response)
-
-	stringResponseSlice := strings.Split(stringResponse, "\r\n\r\n")
-
-	var userResponseLine string
-	for _, line := range stringResponseSlice {
-		if strings.HasPrefix(line, "{") {
-			userResponseLine = line
-			break
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.Unmarshal(responseBody.Bytes(), &errorResponse); err != nil {
+			fmt.Println("Failed to unmarshal error response:", err)
+			return resp.Status, responseBody.String()
 		}
+
+		return resp.Status, fmt.Sprintf("{\"error\":\"%s\"}", errorResponse.Error)
 	}
 
-	var userResponse handlers.UserResponse
-	if err := json.Unmarshal([]byte(userResponseLine), &userResponse); err != nil {
-		fmt.Println(err)
-		log.Fatalf("Error unmarshalling JSON: %v", err)
-	}
-
-	fmt.Println("UserResponse:", userResponse.Data)
+	return resp.Status, responseBody.String()
 }

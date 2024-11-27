@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"log"
 	customerrors "server/server/customErrors"
 )
 
@@ -17,8 +18,12 @@ func (cache *Cache) LimitingNodesQuantity(newSize int) error {
 		currentNode = currentNode.Next
 	}
 
-	if count <= newSize {
+	if count < newSize {
 		return customerrors.ExceedingCacheSizeError(count, newSize)
+	}
+
+	if count == newSize {
+		log.Printf("it is already your cache size (%d)\n", newSize)
 	}
 
 	currentNode = cache.List.Head
