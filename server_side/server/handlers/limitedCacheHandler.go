@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	customerrors "server/server/customErrors"
 )
@@ -32,6 +31,6 @@ func (s *Server) ChangeCacheSize(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// json.NewEncoder(w).Encode(ChangedSize(newSizeOfCache))
-	log.Printf("new cache size: %d", newSizeOfCache.Size)
+	json.NewEncoder(w).Encode(ChangedSize(newSizeOfCache))
+	// log.Printf("new cache size: %d", newSizeOfCache.Size)
 }
