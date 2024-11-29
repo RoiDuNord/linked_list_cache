@@ -19,7 +19,6 @@ func (cache *Cache) LimitingNodesQuantity(newSize int) error {
 	}
 
 	if count < newSize {
-		// return fmt.Errorf("new size (%d) > yours (%d)", newSize, count)
 		return customerrors.ExceedingCacheSizeError(count, newSize)
 	}
 

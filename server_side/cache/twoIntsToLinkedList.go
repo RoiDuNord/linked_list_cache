@@ -19,6 +19,10 @@ type LinkedList struct {
 	Head *Node
 }
 
+type CacheNodes struct {
+	Nodes []Data `json:"cache"`
+}
+
 func newNode(number, multipliedNumber int) *Node {
 	return &Node{
 		Data: Data{
@@ -63,8 +67,4 @@ func (list *LinkedList) Output(w http.ResponseWriter) {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(err)
 	}
-}
-
-type CacheNodes struct {
-	Nodes []Data `json:"list"`
 }
