@@ -2,6 +2,7 @@ package requests
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -22,7 +23,10 @@ func sendRequest(method, url string, reqBody interface{}) (string, interface{}, 
 		reqData = bytes.NewBuffer([]byte{})
 	}
 
-	req, err := http.NewRequest(method, url, reqData)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, method, url, reqData)
 	if err != nil {
 		log.Fatalf("request error: %v", err)
 	}
