@@ -23,6 +23,7 @@ func Run(cfg config.Config) error {
 	go s.StartFactorizeIncrement()
 
 	router.Get("/info", s.InfoHandler)
+
 	router.Post("/admin/cache/changeSize", s.ChangeCacheSize)
 	router.Post("/admin/cache/changeFactor", s.ChangeFactor)
 	router.Get("/admin/cache/output", s.OutputHandler)

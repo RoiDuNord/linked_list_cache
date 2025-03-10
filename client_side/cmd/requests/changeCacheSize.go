@@ -4,7 +4,7 @@ import (
 	"server/server/handlers"
 )
 
-func ChangeCacheSize() (string, interface{}, int64) {
+func ChangeCacheSize() (string, any, int64) {
 	url := "http://localhost:8080/admin/cache/changeSize"
 	newSize := handlers.NewCacheSize{Value: 2}
 

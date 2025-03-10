@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func sendRequest(method, url string, reqBody interface{}) (string, interface{}, int64) {
+func sendRequest(method, url string, reqBody any) (string, any, int64) {
 	start := time.Now()
 	var reqData *bytes.Buffer
 
@@ -23,7 +23,7 @@ func sendRequest(method, url string, reqBody interface{}) (string, interface{}, 
 		reqData = bytes.NewBuffer([]byte{})
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, method, url, reqData)
@@ -44,7 +44,7 @@ func sendRequest(method, url string, reqBody interface{}) (string, interface{}, 
 	body := resp.Body
 	defer body.Close()
 
-	var responseBody interface{}
+	var responseBody any
 	if err := json.NewDecoder(body).Decode(&responseBody); err != nil {
 		log.Fatalf("response body decoding error: %v", err)
 	}

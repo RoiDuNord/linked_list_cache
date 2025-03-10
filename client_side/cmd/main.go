@@ -8,13 +8,13 @@ import (
 )
 
 type Response struct {
-	Endpoint string      `json:"endpoint"`
-	Status   string      `json:"status"`
-	Body     interface{} `json:"body"`
-	Time     int64       `json:"responseTime(ms)"`
+	Endpoint string `json:"endpoint"`
+	Status   string `json:"status"`
+	Body     any    `json:"body"`
+	Time     int64  `json:"responseTime(ms)"`
 }
 
-func executeRequest(name string, requestFunc func() (string, interface{}, int64)) Response {
+func executeRequest(name string, requestFunc func() (string, any, int64)) Response {
 	status, respBody, responseTime := requestFunc()
 	return Response{
 		Endpoint: name,
@@ -30,7 +30,7 @@ func main() {
 
 	funcs := []struct {
 		name        string
-		requestFunc func() (string, interface{}, int64)
+		requestFunc func() (string, any, int64)
 	}{
 		{"Info", requests.Info},
 		{"ChangeCacheSize", requests.ChangeCacheSize},
@@ -43,7 +43,7 @@ func main() {
 
 	for _, f := range funcs {
 		wg.Add(1)
-		go func(name string, requestFunc func() (string, interface{}, int64)) {
+		go func(name string, requestFunc func() (string, any, int64)) {
 			defer wg.Done()
 			result := executeRequest(name, requestFunc)
 			results = append(results, result)
