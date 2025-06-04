@@ -1,3 +1,78 @@
 .DS_Store
-.gitignore
+.gitignore // почему себя не игнорирует?
 config.yaml
+
+
+.
+├── client_side
+│   ├── cmd
+│   │   ├── main.go
+│   │   └── requests
+│   │       ├── cacheOutput.go
+│   │       ├── changeCacheSize.go
+│   │       ├── changeFactor.go
+│   │       ├── info.go
+│   │       ├── isWorkerActive.go
+│   │       └── sendRequest.go
+│   ├── go.mod
+│   └── main
+├── go.work
+├── README.md
+└── server_side
+    ├── cache
+    │   ├── findNumbers.go
+    │   ├── insertNumber.go
+    │   ├── isExists.go
+    │   ├── limitingNodesQuantity.go
+    │   ├── newCache.go
+    │   ├── twoIntsToLinkedList.go
+    │   └── updateFactor.go
+    ├── cmd
+    │   └── main.go
+    ├── config
+    │   ├── config.go
+    │   ├── loadConfig.go
+    │   ├── parse.go
+    │   └── validate.go
+    ├── config.yaml
+    ├── db
+    │   └── db.go
+    ├── go.mod
+    ├── go.sum
+    ├── main
+    └── server
+        ├── checkers
+        │   └── checkers.go
+        ├── convertingResponseToIntSlice
+        │   ├── convertingFuncs
+        │   │   ├── intSliceToStringSlice
+        │   │   │   └── intSliceToStringSlice.go
+        │   │   └── parameterValueToIntSlice
+        │   │       ├── parameterValueToIntSlice.go
+        │   │       ├── parameterValueToStringSlice
+        │   │       │   ├── deduplication
+        │   │       │   │   ├── deduplication.go
+        │   │       │   │   └── deduplicationSupportFunctions
+        │   │       │   │       └── createSet.go
+        │   │       │   └── parameterValueToStringSlice.go
+        │   │       └── stringSliceToIntSlice
+        │   │           ├── parameterValueToInteger.go
+        │   │           └── stringSliceToIntSlice.go
+        │   └── toIntSlice.go
+        ├── customErrors
+        │   ├── emptySliceError.go
+        │   ├── exceedingCacheSizeError.go
+        │   ├── exceedingTenValuesError.go
+        │   ├── negativeCacheSizeError.go
+        │   ├── negativeFactorError.go
+        │   ├── parseConfigError.go
+        │   ├── urlWithoutParameterNumbersError.go
+        │   ├── wrongCacheSize.go
+        │   ├── wrongParameterOrValueError.go
+        │   └── zeroLenError.go
+        ├── handlers
+        │   ├── cacheOutputHandler.go
+        │   ├── cacheSizeHandler.go
+        │   ├── factorHandler.go
+        │   └── infoHandler.go
+        └── server.go
