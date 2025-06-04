@@ -11,7 +11,7 @@ type Response struct {
 	Endpoint string `json:"endpoint"`
 	Status   string `json:"status"`
 	Body     any    `json:"body"`
-	Time     int64  `json:"responseTime(ms)"`
+	Time     int64  `json:"responseTime(ns)"`
 }
 
 func executeRequest(name string, requestFunc func() (string, any, int64)) Response {
@@ -36,9 +36,9 @@ func main() {
 		{"ChangeCacheSize", requests.ChangeCacheSize},
 		{"CacheOutputWithNewSize", requests.CacheOutput},
 		{"ChangeFactor", requests.ChangeFactor},
-		{"isActiveWorker", requests.IsActiveWorker},
+		{"IsActiveWorker", requests.IsActiveWorker},
 		{"CacheOutputWithNewFactor", requests.CacheOutput},
-		{"isActiveWorker", requests.IsActiveWorker},
+		{"IsActiveWorker", requests.IsActiveWorker},
 	}
 
 	for _, f := range funcs {

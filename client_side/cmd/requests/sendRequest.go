@@ -49,7 +49,7 @@ func sendRequest(method, url string, reqBody any) (string, any, int64) {
 		log.Fatalf("response body decoding error: %v", err)
 	}
 
-	responseTime := time.Since(start).Milliseconds()
+	responseTime := time.Since(start).Nanoseconds()
 
 	return resp.Status, responseBody, responseTime
 }

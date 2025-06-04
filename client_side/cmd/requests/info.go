@@ -7,3 +7,6 @@ func Info() (string, any, int64) {
 
 	return status, respBody, responseTime
 }
+
+
+
